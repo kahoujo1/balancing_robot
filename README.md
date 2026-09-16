@@ -7,7 +7,13 @@ docker image build -t rl-headless .
 ```
 **2.) Run the container**
 ```bash
-docker run -it -p 8888:8888 -p 6006:6006 -v $(pwd):/workspace rl-headless
+xhost +local:docker # allow to project displays
+docker run -it -p 8888:8888 -p 6006:6006 \
+  --device /dev/dri \
+  -e DISPLAY=$DISPLAY \
+  -v /tmp/.X11-unix:/tmp/.X11-unix \
+  -v $(pwd)/workspace:/workspace \
+  rl-headless
 ```
 
 **3.) Open additional terminal**
